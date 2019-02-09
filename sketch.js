@@ -1,4 +1,5 @@
 const canvasSketch = require('canvas-sketch');
+const { lerp } = require('canvas-sketch-util/math');
 
 const settings = {
   dimensions: [2048, 2048],
@@ -26,7 +27,8 @@ const sketch = () => {
 
   // call the function
   const points = createGrid();
-  console.log(points);
+  // set the margin
+  const margin = 200;
 
   return ({ context, width, height }) => {
     context.fillStyle = 'white';
@@ -35,13 +37,13 @@ const sketch = () => {
     // loop through the coordinates points
     points.forEach(([u, v]) => {
       // scale up the values so we get pixel coordinates as out canvas dimension
-      const x = u * width;
-      const y = v * height;
+      const x = lerp(margin, width - margin, u);
+      const y = lerp(margin , height - margin, v);
 
       // start drawing the circle
       context.beginPath();
       context.arc(x, y, 100, 0, Math.PI * 2, false);
-      context.fillStyle = '#1985A1';
+      context.fillStyle = 'orange';
       context.fill();
       context.lineWidth = 20;
       context.strokeStyle = '#46494C';
